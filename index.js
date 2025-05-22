@@ -6,6 +6,10 @@ const expo = new Expo();
 const app = express();
 app.use(bodyParser.json());
 
+app.get('/health', (req, res) => {
+  res.status(200).send({ status: 'ok', message: 'Server is healthy 🚀' });
+});
+
 app.post('/send-notification', async (req, res) => {
   const { token, title, body } = req.body;
 
