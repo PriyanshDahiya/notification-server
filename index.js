@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Firebase Admin Init
-const serviceAccount = require('./suitsme-1b95b-firebase-adminsdk-fbsvc-9f3fb934dd.json');
+const serviceAccount = require('./suitsme-1b95b-firebase-adminsdk-fbsvc-01a8cdf635.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
