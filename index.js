@@ -1,23 +1,32 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const admin = require('firebase-admin');
 
 const app = express();
+
+// ✅ Allow only specific frontend origin (Expo web client)
+const corsOptions = {
+  origin: 'http://localhost:19007',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-// ✅ Initialize Firebase Admin using env variable (secure)
+// ✅ Initialize Firebase Admin
 const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-// ✅ Health check route
+// ✅ Health check
 app.get('/health', (req, res) => {
   res.status(200).send('Notification server is healthy');
 });
 
-// ✅ Push Notification route
+// ✅ Push Notification endpoint
 app.post('/send-notification', async (req, res) => {
   const { token, title, body } = req.body;
 
@@ -53,8 +62,7 @@ app.post('/send-notification', async (req, res) => {
   }
 });
 
-
-// ✅ Start the server
+// ✅ Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Notification server is running on port ${PORT}`);
